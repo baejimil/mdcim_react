@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+
+  react:
+    container_name: mdcim_react_dockerize
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/mdcim_react"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
