@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Content, Row, Col, Box } from 'adminlte-2-react';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
+import { Content, Box, Button } from 'adminlte-2-react';
 import 'prismjs/components/prism-clike';
 import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-python';
@@ -12,7 +10,6 @@ import Textarea from '../../../components/Textarea';
 import SaveButton from '../../../components/SaveButton';
 
 import axios from 'axios';
-
 
 const code = `def index():
     return 'Hi'`;
@@ -26,7 +23,6 @@ export default class Modbus_Schedules_Add extends Component {
             key: '',
             note: '',
             type: '',
-
         }
         this.handleChange = this.handleChange.bind(this)
         this.click = this.click.bind(this)
@@ -55,6 +51,11 @@ export default class Modbus_Schedules_Add extends Component {
         return (
             <Content title='Modbus'>
                 <Box title='Modbus_Schedule_Add' border type='default' collapsable solid>
+                    <div style={{ padding: '10px 0px 0px 10px' }}>
+                        <a href='/devicesettings/modbusschedules'>
+                            <Button icon='fas-arrow-left' text='Back to list' type='danger' />
+                        </a>
+                    </div>
                     <Textarea label='Modbus Code' name='code' value={this.state.code} onChange={code => this.setState({ modbuscode: code })} />
                     <Input label='Modbus Id' name='id' value={this.state.id} onChange={this.handleChange} placeholder='test-1' />
                     <Subtitle label='Templates' />

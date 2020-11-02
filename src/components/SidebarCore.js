@@ -1,5 +1,9 @@
 import React from 'react';
 import { Sidebar } from 'adminlte-2-react';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+
+import Modbus_Schedules from '../screens/devicesettings/modbus/Modbus_Schedules';
+import Modbus_Schedules_Details from '../screens/devicesettings/modbus/Modbus_Schedules_Details';
 
 const { Item } = Sidebar;
 
@@ -25,10 +29,31 @@ export default function SidebarCore() {
 
             <Item icon='fas-tablet-alt' text='Device Settings'>
                 <Item icon='fas-angle-right' text='Network' to='/devicesettings/network' />
-                <Item icon='fas-plus' text='Modbus'>
-                    <Item icon='fas-angle-right' text='Modbus_Schedules' to='/devicesettings/modbusschedules' />
-                    <Item icon='fas-angle-right' text='Modbus_Schedules_Add' to='/devicesettings/modbusschedulesadd' />
-                </Item>
+                {/* <Router>
+                    <Link to='/devicesettings/modbusschedules'>
+                        <Item icon='fas-angle-right' text='Modbus Schedules' />
+                    </Link>
+                    <Link to='/devicesettings/modbusschedulesadd'>
+                        <Item icon='fas-angle-right' text='Modbus Schedules Add' />
+                    </Link>
+                    <Link to='/devicesettings/modbusschedulesdetails'>
+                        <Item icon='fas-angle-right' text='Modbus Schedules Details' />
+                    </Link>
+                    <Route path='/devicesettings/modbusschedules' exact component={Modbus_Schedules} />
+                    <Route path='/devicesettings/modbusschedulesdetails' exact component={Modbus_Schedules_Details} />
+                </Router> */}
+
+
+                {/* <Item icon='fas-plus' text='Modbus'> */}
+                {/* <Item icon='fas-angle-right' text='Modbus Schedules' to='/devicesettings/modbusschedules' /> */}
+                <Item icon='fas-angle-right' text='sss' to='/devicesettings/sss' />
+                <Item icon='fas-angle-right' text='sample' to='/devicesettings/modbusschedules' />
+                <Item icon='fas-angle-right' text='sample2' to='/devicesettings/modbusschedulestwo' />
+                {/* <Item icon='fas-angle-right' text='Modbus Schedules Add' to='/devicesettings/modbusschedulesadd' />
+                    <Item icon='fas-angle-right' text='Modbus Schedules Details' to='/devicesettings/modbusschedulesdetails' /> */}
+                {/* </Item> */}
+
+
                 {/* <Item icon='fas-plus' text='Network Services'>
                     <Item icon='fas-angle-right' text='HTTP' to='/devicesettings/networkservices/http' />
                     <Item icon='fas-angle-right' text='SNMP' to='/devicesettings/networkservices/snmp' />

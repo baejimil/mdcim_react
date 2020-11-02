@@ -4,6 +4,7 @@ import AdminLTE, { Content, Navbar, Sidebar } from 'adminlte-2-react'
 import NavbarCore from './components/NavbarCore';
 import SidebarCore from './components/SidebarCore';
 
+import Home from './screens/Home';
 import Test from './components/Test';
 // import Dashboard from './screens/Dashboard';
 // import SRC from './screens/SRC';
@@ -20,8 +21,12 @@ import UserPreferences from './screens/usermanagement/UserPreferences';
 import DefaultPreferences from './screens/usermanagement/DefaultPreferences';
 
 import Network from './screens/devicesettings/network/Network';
-import Modbus_Schedules_Add from './screens/devicesettings/modbus/Modbus_Schedules_Add';
 import Modbus_Schedules from './screens/devicesettings/modbus/Modbus_Schedules';
+import Modbus_Schedules_Add from './screens/devicesettings/modbus/Modbus_Schedules_Add';
+import Modbus_Schedules_Details from './screens/devicesettings/modbus/Modbus_Schedules_Details';
+import Sample from './screens/devicesettings/modbus/sample';
+import Sample2 from './screens/devicesettings/modbus/sample2';
+import SSS from './screens/devicesettings/modbus/sss';
 // import NetworkServices from './screens/DeviceSettings/NetworkServices/NetworkServices';
 // import HTTP from './screens/DeviceSettings/NetworkServices/HTTP';
 // import SNMP from './screens/DeviceSettings/NetworkServices/SNMP';
@@ -51,7 +56,8 @@ import Modbus_Schedules from './screens/devicesettings/modbus/Modbus_Schedules';
 export default class App extends Component {
   render() {
     return (
-      <AdminLTE title={['Raritan']} theme='black' browserTitle='Raritan' titleShort='R'>
+
+      <AdminLTE title={['VIVANS']} theme='black' browserTitle='Raritan' titleShort='R'>
         <Navbar.Core>
           <NavbarCore />
         </Navbar.Core>
@@ -59,7 +65,10 @@ export default class App extends Component {
           <SidebarCore />
         </Sidebar.Core>
 
+        <Home path='/' exact />
+
         <Test path='/test' exact />
+
         {/* <Dashboard path='/dashboard' exact />
         <SRC path='/src' exact />
         <Peripherals path='/peripherals' exact />
@@ -78,8 +87,13 @@ export default class App extends Component {
         {/* Device Settings */}
         <Network path='/devicesettings/network' exact />
         {/* Modbus */}
-        <Modbus_Schedules path='/devicesettings/modbusschedules' exact />
+
+        {/* <Modbus_Schedules path='/devicesettings/modbusschedules' exact /> */}
+        <SSS path='/devicesettings/sss' exact />
+        <Sample path='/devicesettings/modbusschedules' exact />
+        <Sample2 path='/devicesettings/modbusschedulestwo' exact />
         <Modbus_Schedules_Add path='/devicesettings/modbusschedulesadd' exact />
+        {/* <Modbus_Schedules_Details  exact path='/devicesettings/modbusschedulesdetails'/> */}
 
 
         {/*<HTTP path='/devicesettings/networkservices/http' exact />
