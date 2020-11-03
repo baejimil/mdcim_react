@@ -97,7 +97,7 @@ export default function Modbus_Schedules_Details({ match }) {
 
     return (
         <Content title='Modbus'>
-            <Box title='Modbus Schedules Detail' border type='default' collapsable solid>
+            <Box title='Modbus Schedules Detail' border type='default' collapsable solid >
                 {/* {console.log(paramsid)} */}
                 {console.log(Modbus_Schedules)}
                 <div style={{ padding: '10px 0px 0px 10px' }}>
@@ -151,82 +151,7 @@ export default function Modbus_Schedules_Details({ match }) {
                             )}
                         </Droppable>
                     </DragDropContext>
-
                 </div>
-                {/* <DragDropContext onDragEnd={onDragEnd} >
-                        <Droppable droppableId="droppable">
-                            {(provided, snapshot) => (
-                                <div
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                    style={getListStyle(snapshot.isDraggingOver)}
-                                >
-
-                                    {Modbus_Schedules.code}
-                                    {Modbus_Schedules[0].template.map((template, index) => (
-                                        <Draggable key={template.key} draggableId={template.key} index={index}>
-                                            {(provided, snapshot) => (
-                                                <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    style={getItemStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps.style
-                                                    )}
-                                                >
-                                                    <br />
-                                                    {template.key}
-                                                    <br />
-                                                    {template.note}
-                                                    <br />
-                                                    {template.type}
-                                                    <br />
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    ))} */}
-
-
-                {/* {Modbus_Schedules.map((Modbus_Schedule, index) => (
-                                        <Draggable key={Modbus_Schedule.id} draggableId={Modbus_Schedule.id} index={index}>
-                                            {(provided, snapshot) => (
-                                                <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    style={getItemStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps.style
-                                                    )}
-                                                >
-                                                    {Modbus_Schedule.code}
-
-                                                    {Modbus_Schedule.template.map((template) =>
-                                                        (
-                                                            <div>
-                                                                <br />
-                                                                {template.key}
-                                                                <br />
-                                                                {template.note}
-                                                                <br />
-                                                                {template.type}
-                                                                <br />
-                                                            </div>
-                                                        )
-                                                    )}
-                                                </div>
-                                            )}
-
-                                        </Draggable>
-                                    ))}
-                                    {provided.placeholder} */}
-
-
-                {/* )}
-                        </Droppable>
-                    </DragDropContext>
-                </div > */}
             </Box >
         </Content >
     );

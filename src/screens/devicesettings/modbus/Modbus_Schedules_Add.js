@@ -8,11 +8,19 @@ import Subtitle from '../../../components/Subtitle';
 import Input from '../../../components/Input';
 import Textarea from '../../../components/Textarea';
 import SaveButton from '../../../components/SaveButton';
+import Select from '../../../components/Select';
 
 import axios from 'axios';
 
 const code = `def index():
     return 'Hi'`;
+
+const selectType = [
+    'B64_STRING',
+    'B16_INT',
+    'B32_FLOAT'
+]
+
 
 export default class Modbus_Schedules_Add extends Component {
     constructor(props) {
@@ -51,9 +59,9 @@ export default class Modbus_Schedules_Add extends Component {
         return (
             <Content title='Modbus'>
                 <Box title='Modbus_Schedule_Add' border type='default' collapsable solid>
-                    <div style={{ padding: '10px 0px 0px 10px' }}>
+                    <div style={{ padding: '20px 0px 30px 9px' }}>
                         <a href='/devicesettings/modbusschedules'>
-                            <Button icon='fas-arrow-left' text='Back to list' type='danger' />
+                            <Button icon='fas-arrow-left' text='Back to list' type='warning' />
                         </a>
                     </div>
                     <Textarea label='Modbus Code' name='code' value={this.state.code} onChange={code => this.setState({ modbuscode: code })} />
@@ -62,7 +70,7 @@ export default class Modbus_Schedules_Add extends Component {
                     <br />
                     <Input label='Modbus template key' name='key' value={this.state.key} onChange={this.handleChange} placeholder='data01' />
                     <Input label='Modbus template note' name='note' value={this.state.note} onChange={this.handleChange} placeholder='String' />
-                    <Input label='Modbus template type' name='type' value={this.state.type} onChange={this.handleChange} placeholder='B64_STRING' />
+                    <Select label='Modbus template type' name='type' options={selectType} onChange={this.handleChange} placeholder='B64_STRING' />
                     <br />
                     <SaveButton label='Save' onClick={this.click} />
                 </Box>

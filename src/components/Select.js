@@ -20,7 +20,7 @@ export default class Select extends Component {
                         fontSize: '20px',
                         width: '30%',
                     }}>{this.props.label}</div>
-                    <div style={{ display: 'inline-block', verticalAlign: 'middle', width: '68%' }}>
+                    <div style={{ display: 'inline-block', verticalAlign: 'middle', width: '68%', paddingTop: '15px' }}>
                         <Select2
                             name={this.props.name}
                             labelPosition='none'
