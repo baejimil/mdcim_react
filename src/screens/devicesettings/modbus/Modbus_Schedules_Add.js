@@ -58,7 +58,7 @@ export default class Modbus_Schedules_Add extends Component {
     render() {
         return (
             <Content title='Modbus'>
-                <Box title='Modbus_Schedule_Add' border type='default' collapsable solid>
+                <Box title='Modbus Schedule Add' border type='default' collapsable solid>
                     <div style={{ padding: '20px 0px 30px 9px' }}>
                         <a href='/devicesettings/modbusschedules'>
                             <Button icon='fas-arrow-left' text='Back to list' type='warning' />

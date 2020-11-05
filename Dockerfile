@@ -8,7 +8,9 @@ ENV PATH /mdcim_react/node_modules/.bin:$PATH
 COPY package.json /mdcim_react/package.json
 
 EXPOSE 3000
+
 # RUN apt-get update -qq && apt-get install -y build-essential nodejs
 RUN npm install 
+RUN npm install react-scripts@4.0.0 -g
 
 ENTRYPOINT ["npm", "start"]

@@ -1,9 +1,5 @@
 import React from 'react';
 import { Sidebar } from 'adminlte-2-react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-
-import Modbus_Schedules from '../screens/devicesettings/modbus/MMM';
-import Modbus_Schedules_Details from '../screens/devicesettings/modbus/Modbus_Schedules_Details';
 
 const { Item } = Sidebar;
 
@@ -29,20 +25,6 @@ export default function SidebarCore() {
 
             <Item icon='fas-tablet-alt' text='Device Settings'>
                 <Item icon='fas-angle-right' text='Network' to='/devicesettings/network' />
-                {/* <Router>
-                    <Link to='/devicesettings/modbusschedules'>
-                        <Item icon='fas-angle-right' text='Modbus Schedules' />
-                    </Link>
-                    <Link to='/devicesettings/modbusschedulesadd'>
-                        <Item icon='fas-angle-right' text='Modbus Schedules Add' />
-                    </Link>
-                    <Link to='/devicesettings/modbusschedulesdetails'>
-                        <Item icon='fas-angle-right' text='Modbus Schedules Details' />
-                    </Link>
-                    <Route path='/devicesettings/modbusschedules' exact component={Modbus_Schedules} />
-                    <Route path='/devicesettings/modbusschedulesdetails' exact component={Modbus_Schedules_Details} />
-                </Router> */}
-
 
                 {/* <Item icon='fas-plus' text='Modbus'> */}
                 <Item icon='fas-angle-right' text='Modbus Schedules' to='/devicesettings/modbusschedules' />

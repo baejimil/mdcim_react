@@ -64,7 +64,7 @@ class Modbus_Schedules extends Component {
     render() {
         return (
             <Content title='Modbus' >
-                <Box title='Modbus List' border type='default' collapsable solid >
+                <Box title='Modbus Schedules List' border type='default' collapsable solid >
                     <div style={{ textAlign: 'right' }}>
                         <Button icon='fas-plus' type='info' to='/devicesettings/modbusschedulesadd' />&nbsp;&nbsp;&nbsp;&nbsp;
                     <Button icon='fas-sync' type='default' onClick={() => { window.location.reload(false) }} />&nbsp;&nbsp;
@@ -258,8 +258,8 @@ class Modbus_Schedules_Details extends Component {
 class Modbus_Schedules_Edit extends Component {
     render() {
         return (
-            <Content title='Modbus Schedules Edit' border type='default' collapsable solid style={{ height: '100vh' }}>
-                <Box>
+            <Content title='Modbus' >
+                <Box title='Modbus Schedules Edit' border type='default' collapsable solid style={{ height: '100vh' }}>
                     <div style={{ padding: '10px 0px 0px 10px' }}>
                         <a href='/devicesettings/modbusschedules'>
                             <Button icon='fas-arrow-left' text='Back to list' type='warning' />

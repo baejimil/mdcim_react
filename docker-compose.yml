@@ -9,6 +9,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ".:/mdcim_react"
+      # - "/mdcim_react/node_modules"
+
+    expose:
+      - 3000
     ports:
       - "3000:3000"
     environment:
