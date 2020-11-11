@@ -10,7 +10,7 @@ export default function Login() {
 
                 <div class="login-box">
                     <div class="login-logo">
-                        <a href="/"><b>Raritan</b></a>
+                        <a href="/"><b>VIVANS</b></a>
                     </div>
                     <div class="card">
                         <div class="card-body login-card-body">

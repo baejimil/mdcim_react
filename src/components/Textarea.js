@@ -24,7 +24,7 @@ export default class Textarea extends Component {
                     }}
                 >
                     <div style={{
-                        paddingLeft: '10px',
+                        paddingLeft: '20px',
                         paddingRight: '10px',
                         fontSize: '20px',
                         width: '30%',

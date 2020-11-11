@@ -16,16 +16,19 @@ export default class Select extends Component {
                 <div style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                     <div style={{
                         display: 'inline-block',
-                        paddingLeft: '10px',
+                        paddingLeft: '20px',
                         fontSize: '20px',
                         width: '30%',
                     }}>{this.props.label}</div>
                     <div style={{ display: 'inline-block', verticalAlign: 'middle', width: '68%', paddingTop: '15px' }}>
                         <Select2
                             name={this.props.name}
+                            defaultValue={this.props.defaultValue}
+                            value={this.props.value}
                             labelPosition='none'
                             style={{ width: '100%' }}
                             options={this.props.options}
+                            onChange={this.props.onChange}
                             placeholder={this.props.placeholder} />
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class Checkbox extends Component {
+export default class CheckBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +22,7 @@ export default class Checkbox extends Component {
                 }}
             >
                 <div style={{
-                    paddingLeft: '10px',
+                    paddingLeft: '20px',
                     paddingRight: '10px',
                     fontSize: '20px',
                     width: '30%',

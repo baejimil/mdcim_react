@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Box } from 'adminlte-2-react';
+import { Content, Box } from 'adminlte-2-react';
 
-import Input from '../../../components/Input';
-import SaveButton from '../../../components/SaveButton';
+import Input from '../../components/Input';
+import SaveButton from '../../components/SaveButton';
 
 import axios from 'axios';
 
-export default class BRIDGE extends Component {
+export default class Network extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,38 +37,40 @@ export default class BRIDGE extends Component {
 
     render() {
         return (
-            <Box title='BRIDGE' border type='default' collapsable solid>
-                <div style={{
-                    paddingLeft: '10px',
-                    paddingRight: '10px',
-                    fontSize: '25px',
-                    paddingBottom: '10px',
-                    paddingTop: '25px',
-                    borderBottom: '2px solid #E0D7D7',
-                }}>
-                    IPv4
+            <Content title='Network'>
+                <Box title='Settings' border type='default' collapsable solid>
+                    <div style={{
+                        paddingLeft: '10px',
+                        paddingRight: '10px',
+                        fontSize: '25px',
+                        paddingBottom: '10px',
+                        paddingTop: '25px',
+                        borderBottom: '2px solid #E0D7D7',
+                    }}>
+                        IPv4
                             </div>
-                <br />
-                {/* <form action="http://127.0.0.1:5000/devicesettings/network" method="POST" onSubmit="Save network settings?"> */}
-                <div style={{ paddingTop: '20px' }}>
-                    <Input label='IPv4 Address' name='ipv4' value={this.state.address} onChange={this.handleChange} placeholder='192.168.0.1' />
-                </div>
+                    <br />
+                    {/* <form action="http://127.0.0.1:5000/devicesettings/network" method="POST" onSubmit="Save network settings?"> */}
+                    <div style={{ paddingTop: '20px' }}>
+                        <Input label='IPv4 Address' name='ipv4' value={this.state.address} onChange={this.handleChange} placeholder='192.168.0.1' />
+                    </div>
+                    <br /><br />
+                    <Input label='Subnetmask' name='subnetmask' value={this.state.subnetmask} onChange={this.handleChange} placeholder='255.255.255.0' />
+                    <br /><br />
+                    <Input label='Gateway' name='gateway' value={this.state.gateway} onChange={this.handleChange} placeholder='192.168.0.1' />
+                    <br /><br />
+                    <SaveButton onClick={this.click} />
 
-                <Input label='Subnetmask' name='subnetmask' value={this.state.subnetmask} onChange={this.handleChange} placeholder='255.255.255.0' />
-                <Input label='Gateway' name='gateway' value={this.state.gateway} onChange={this.handleChange} placeholder='192.168.0.1' />
-                <br />
-                <SaveButton onClick={this.click} />
 
 
-
-                {/* {console.log(this.state.address)}
+                    {/* {console.log(this.state.address)}
                 {console.log(this.state.subnetmask)}
                 {console.log(this.state.gateway)} */}
 
 
 
-                {/* </form> */}
-                {/* <div style={{
+                    {/* </form> */}
+                    {/* <div style={{
                     paddingLeft: '10px',
                     paddingRight: '10px',
                     fontSize: '25px',
@@ -85,7 +87,8 @@ export default class BRIDGE extends Component {
                 <Input label='IP auto configuration' />
                 <Input label='Preferred hostname' />
                 <br /> */}
-            </Box>
+                </Box>
+            </Content>
         );
     }
 }

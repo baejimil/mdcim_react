@@ -20,7 +20,7 @@ import ChangePassword from './screens/usermanagement/ChangePassword';
 import UserPreferences from './screens/usermanagement/UserPreferences';
 import DefaultPreferences from './screens/usermanagement/DefaultPreferences';
 
-import Network from './screens/devicesettings/network/Network';
+import Network from './screens/devicesettings/Network';
 import Modbus_Schedules from './screens/devicesettings/modbus/Modbus_Schedules';
 import Modbus_Schedules_Add from './screens/devicesettings/modbus/Modbus_Schedules_Add';
 
@@ -84,7 +84,6 @@ export default class App extends Component {
         {/* Device Settings */}
         <Network path='/devicesettings/network' exact />
         {/* Modbus */}
-
         <Modbus_Schedules path='/devicesettings/modbusschedules' exact />
         <Modbus_Schedules_Add path='/devicesettings/modbusschedulesadd' exact />
         {/* <Modbus_Schedules_Details  exact path='/devicesettings/modbusschedulesdetails'/> */}

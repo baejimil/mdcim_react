@@ -8,7 +8,7 @@ export default class RadioC extends Component {
         return (
             <div style={{ display: 'flex', alignItems: 'center', paddingTop: '10px', }}>
                 <div style={{
-                    paddingLeft: '10px',
+                    paddingLeft: '20px',
                     paddingRight: '10px',
                     fontSize: '20px',
                     width: '30%',

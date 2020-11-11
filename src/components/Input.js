@@ -12,11 +12,9 @@ export default class Input extends Component {
         return (
             <>
                 <div style={{
-                    paddingLeft: '10px',
+                    paddingLeft: '20px',
                     paddingRight: '10px',
                     fontSize: '20px',
-                    paddingBottom: '15px',
-                    paddingTop: '25px',
                     display: 'inline-block',
                     width: '30%',
                 }}>
