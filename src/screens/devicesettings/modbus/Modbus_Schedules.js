@@ -59,7 +59,12 @@ class Modbus_Schedules extends Component {
             .then(res => {
                 res.data.map((data, index) => {
                     data.index = index;
-                    firstarray.push(res.data[index])
+                    firstarray.push(res.data[index]);
+                    // if (firstarray.length < 1) {
+                    //     firstarray.push(res.data[index])
+                    // }
+                    // else
+                    //     return false
                 })
                 this.setState(prevState => ({ Schedules: [...prevState.Schedules, ...res.data] }))
             })
@@ -112,9 +117,6 @@ const getListStyle = (isDraggingOver) => ({
     width: '100%',
 });
 
-// const code = `def index():
-//     return 'Hi'`;
-
 const selectType = [
     'B64_STRING',
     'B16_INT',
@@ -132,11 +134,18 @@ class Modbus_Schedules_Details extends Component {
         }
         this.onDragEnd = this.onDragEnd.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.click = this.click.bind(this)
     }
 
     componentDidMount() {
         firstarray.map((data, index) => {
-            data.id == this.state.paramsid ? secondarray.push(data) : console.log('Else wrong ID')
+            if (secondarray.length < 1) {
+                data.id == this.state.paramsid ? secondarray.push(data) : console.log('Else wrong ID')
+            }
+            else {
+                return false
+            }
+            // data.id == this.state.paramsid ? secondarray.push(data) : console.log('Else wrong ID')
         })
         secondarray[0].template.map((data, index) => {
             secondarray[0].template[index].id = `t-${index}`
@@ -160,6 +169,56 @@ class Modbus_Schedules_Details extends Component {
         this.setState({
             MS: thirdarray
         });
+    }
+
+    click() {
+        let form = new FormData()
+
+        const editData = {}
+        const editTemplate = []
+        const sendData = []
+
+        editData['code'] = this.state.MS[0].code
+        editData['id'] = this.state.MS[0].id
+
+        this.state.MS[0].template.map((data, index) => {
+            let temp = {}
+            temp['key'] = data.key
+            temp['type'] = data.type
+            temp['note'] = data.note
+            editTemplate.push(temp)
+        })
+        editData['template'] = editTemplate
+
+        firstarray.map((data, index) => {
+            data.id == this.state.paramsid ? data = editData : console.log('r')
+            let input1 = {}
+            input1.id = data.id
+            input1.code = data.code
+            input1.template = []
+            data.template.map((tempdata, index) => {
+                let input2 = {}
+                input2['key'] = tempdata.key
+                input2['type'] = tempdata.type
+                input2['note'] = tempdata.note
+                input1.template.push(input2)
+            })
+            sendData.push(input1)
+        })
+
+        console.log(sendData)
+        form.append('modbus_schedules_edit', JSON.stringify(sendData))
+        if (window.confirm('Do you really want to Edit?') == true) {
+            axios.post('http://127.0.0.1:5001/devicesettings/modbusschedulesedit', form, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            window.location.href = 'http://localhost:3000/'
+        }
+        else {
+            return false
+        }
     }
 
     handleChange(hc) {
@@ -336,7 +395,7 @@ class Modbus_Schedules_Details extends Component {
                         <button
                             type='submit'
                             style={{ padding: '5px', width: '100px' }}
-                            onClick={() => { }}>Save</button>
+                            onClick={this.click}>Save</button>
                     </div>
                     <br /><br />
                 </Box >
@@ -384,7 +443,6 @@ class Modbus_Schedules_Edit extends Component {
         else {
             return false
         }
-
     }
 
     render() {
