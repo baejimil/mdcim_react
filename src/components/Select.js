@@ -13,7 +13,7 @@ export default class Select extends Component {
     render() {
         return (
             <>
-                <div style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+                <div style={{ paddingTop: '20px' }}>
                     <div style={{
                         display: 'inline-block',
                         paddingLeft: '20px',

@@ -34,6 +34,8 @@ export default class CheckBox extends Component {
                         type='checkbox'
                         name={this.props.name}
                         style={{ width: '23px', height: '23px' }}
+                        onClick={this.props.onClick}
+                        onChange={this.props.onChange}
                     />
                 </div>
                 <div style={{

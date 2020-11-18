@@ -6,12 +6,13 @@ const { Item } = Sidebar;
 export default function SidebarCore() {
     return (
         <>
-            <Item icon='fas-clipboard' text='Test' to='/test' />
             {/* <Item icon='fas-clipboard' text='Dashboard' to='/dashboard' />
             <Item icon='fas-th-list' text='SRC' to='/src' />
             <Item icon='fas-circle-notch' text='Peripherals' to='/peripherals' />
             <Item icon='fas-file-import' text='Feature Port' to='/featureport' />
             <Item icon='fas-lock' text='SmartLock' to='/smartlock' /> */}
+
+            <Item icon='fas-clipboard' text='Dashboard' to='/devicesettings/modbusschedules/dashboard' />
 
             <Item icon='fas-user' text='User Management'>
                 <Item icon='fas-angle-right' text='Login' to='/login' />
@@ -23,18 +24,17 @@ export default function SidebarCore() {
                 <Item icon='fas-angle-right' text='Default Preferences' to='/defaultpreferences' />
             </Item>
 
+            <Item icon='fas-list' text='Data Tables'>
+                <Item icon='fas-angle-right' text='Realtime Data' to='/devicesettings/modbusschedules/realtimedata' />
+            </Item>
+
             <Item icon='fas-tablet-alt' text='Device Settings'>
                 <Item icon='fas-angle-right' text='Network' to='/devicesettings/network' />
-
-                {/* <Item icon='fas-plus' text='Modbus'> */}
-                <Item icon='fas-angle-right' text='Modbus Schedules' to='/devicesettings/modbusschedules' />
-
-                {/* <Item icon='fas-angle-right' text='Modbus Schedules Add' to='/devicesettings/modbusschedulesadd' />
-                    <Item icon='fas-angle-right' text='Modbus Schedules Details' to='/devicesettings/modbusschedulesdetails' /> */}
-                {/* </Item> */}
+                <Item icon='fas-angle-right' text='Modbus' to='/devicesettings/modbusschedules' />
+            </Item>
 
 
-                {/* <Item icon='fas-plus' text='Network Services'>
+            {/* <Item icon='fas-plus' text='Network Services'>
                     <Item icon='fas-angle-right' text='HTTP' to='/devicesettings/networkservices/http' />
                     <Item icon='fas-angle-right' text='SNMP' to='/devicesettings/networkservices/snmp' />
                     <Item icon='fas-angle-right' text='SMTP Server' to='/devicesettings/networkservices/smtpserver' />
@@ -61,7 +61,7 @@ export default function SidebarCore() {
                 <Item icon='fas-angle-right' text='Serial Port' to='/devicesettings/serialport' />
                 <Item icon='fas-angle-right' text='Lua Scripts' to='/devicesettings/luascripts' />
                 <Item icon='fas-angle-right' text='Miscellaneous' to='/devicesettings/miscellaneous' /> */}
-            </Item>
+
 
             {/* <Item icon='fas-wrench' text='Maintenance'>
                 <Item icon='fas-angle-right' text='Device Information' to='/maintenance/deviceinformation' />

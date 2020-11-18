@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import AdminLTE, { Content, Navbar, Sidebar } from 'adminlte-2-react'
+import AdminLTE, { Navbar, Sidebar } from 'adminlte-2-react'
+import { Route, Switch } from 'react-router-dom';
 
 import NavbarCore from './components/NavbarCore';
 import SidebarCore from './components/SidebarCore';
@@ -23,6 +24,10 @@ import DefaultPreferences from './screens/usermanagement/DefaultPreferences';
 import Network from './screens/devicesettings/Network';
 import Modbus_Schedules from './screens/devicesettings/modbus/Modbus_Schedules';
 import Modbus_Schedules_Add from './screens/devicesettings/modbus/Modbus_Schedules_Add';
+import Modbus_Realtime from './screens/devicesettings/modbus/Modbus_Realtime';
+import Modbus_Dashboard from './screens/devicesettings/modbus/Modbus_Dashboard';
+import Modbus_Dashboard_App from './screens/devicesettings/modbus/Modbus_Dashboard_App';
+
 
 // import NetworkServices from './screens/DeviceSettings/NetworkServices/NetworkServices';
 // import HTTP from './screens/DeviceSettings/NetworkServices/HTTP';
@@ -49,11 +54,9 @@ import Modbus_Schedules_Add from './screens/devicesettings/modbus/Modbus_Schedul
 // import LuaScripts from './screens/DeviceSettings/LuaScripts';
 // import Miscellaneous from './screens/DeviceSettings/Miscellaneous';
 
-
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
-
       <AdminLTE title={['VIVANS mdcim']} theme='black' browserTitle='mdcim' titleShort='Vm'>
         <Navbar.Core>
           <NavbarCore />
@@ -86,8 +89,8 @@ export default class App extends Component {
         {/* Modbus */}
         <Modbus_Schedules path='/devicesettings/modbusschedules' exact />
         <Modbus_Schedules_Add path='/devicesettings/modbusschedulesadd' exact />
-        {/* <Modbus_Schedules_Details  exact path='/devicesettings/modbusschedulesdetails'/> */}
-
+        <Modbus_Realtime path='/devicesettings/modbusschedules/realtimedata' exact />
+        <Modbus_Dashboard path='/devicesettings/modbusschedules/dashboard' exact />
 
         {/*<HTTP path='/devicesettings/networkservices/http' exact />
         <SNMP path='/devicesettings/networkservices/snmp' exact />
@@ -118,6 +121,20 @@ export default class App extends Component {
         <Miscellaneous path='/devicesettings/miscellaneous' exact /> */}
 
       </AdminLTE >
+    );
+  }
+}
+
+
+export default class App_Route extends Component {
+  render() {
+    return (
+      <div>
+        <Switch>
+          <Route exact path="/devicesettings/modbusschedules/dashboardapp" component={Modbus_Dashboard_App} />
+          <Route path="/" component={App} />
+        </Switch>
+      </div>
     );
   }
 }

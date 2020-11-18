@@ -61,9 +61,16 @@ export default class Modbus_Schedules_Add extends Component {
             MS: [],
             paramsid: match.params.id,
             loading: true,
+            id: '',
+            use: false,
+            host: '',
+            port: '',
+            interval: '',
+            description: '',
         }
         this.onDragEnd = this.onDragEnd.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.click = this.click.bind(this)
     }
 
     componentDidMount() {
@@ -103,29 +110,101 @@ export default class Modbus_Schedules_Add extends Component {
         this.setState({ [hc.target.name]: hc.target.value })
     }
 
+    click() {
+        let form = new FormData()
+
+        const editData = {}
+        const editTemplate = []
+        const sendData = []
+
+        editData['code'] = this.state.MS[0].code
+        editData['id'] = this.state.id
+        editData['use'] = this.state.use
+        editData['seconds'] = this.state.interval
+        editData['description'] = this.state.description
+        editData.comm = {}
+        editData.comm.setting = {}
+        editData.comm.comm_type = this.state.MS[0].comm_typ
+        editData.comm.setting.host = this.state.host
+        editData.comm.setting.port = this.state.port
+        editData.comm.setting.description = this.state.description
+
+        this.state.MS[0].template.map((data, index) => {
+            let temp = {}
+            temp['key'] = data.key
+            temp['type'] = data.type
+            temp['note'] = data.note
+            editTemplate.push(temp)
+        })
+        editData['template'] = editTemplate
+        sendData.push(editData)
+        form.append('modbus_schedules_add', JSON.stringify(sendData))
+        if (window.confirm('Do you really want to Add?') == true) {
+            axios.post('http://127.0.0.1:5001/devicesettings/modbusschedulesadd', form, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            window.location.href = 'http://localhost:3000/'
+        }
+        else {
+            return false
+        }
+    }
+
     render() {
         if (this.state.loading) return <div>Loading...</div>
         return (
             <Content title='ModbusTCP Settings'>
                 <Box border type='default' solid>
-                    <div style={{ padding: '10px 0px 15px 10px' }}>
-                        <a href='/devicesettings/modbusschedules'>
-                            <Button icon='fas-arrow-left' text='Back to list' type='warning' />
-                        </a>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ paddingLeft: '3%', paddingTop: '1.5%' }}>
+                            <a href='/devicesettings/modbusschedules'>
+                                <Button icon='fas-arrow-left' text='&nbsp;Back to list' type='warning' />
+                            </a>
+                        </div>
+                        <div style={{ textAlign: 'right', paddingLeft: '1%', paddingTop: '1.5%' }}>
+                            <Button
+                                icon='fas-save'
+                                type='primary'
+                                style={{ padding: '5px', width: '100px' }}
+                                onClick={this.click}
+                                text='&nbsp;Save'
+                            />
+                        </div>
                     </div>
-                    <br />
+                    <div style={{ padding: '1%' }} />
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ width: '94%' }}>
                             <Box title='Communication Setting' border type='default' collapsable collapsed solid>
+                                <div style={{ padding: '4px' }} />
+                                <CheckBox label='Use' name='use'
+                                    onChange={() => {
+                                        this.state.use = !this.state.use
+                                        console.log(this.state.use)
+                                    }}
+                                />
                                 <br />
-                                <CheckBox label='Use' />
+                                <Input label='Name' name='id' value={this.state.id} onChange={this.handleChange} />
+                                <br /><br />
+                                <Input label='Interval (sec)' name='interval' value={this.state.interval} onChange={this.handleChange} />
+                                <br /><br />
+                                <Input label='Host' name='host' value={this.state.host}
+                                    onChange={this.handleChange}
+                                />
+                                <br /><br />
+                                <Input label='Port' name='port' value={this.state.port} onChange={this.handleChange} />
+                                <Select
+                                    label='Type'
+                                    name='comm_typ'
+                                    options={selectType}
+                                    value={this.state.MS[0].comm_typ}
+                                    onChange={(change) => {
+                                        const { params: { data } } = change;
+                                        this.state.MS[0].comm_typ = data
+                                    }} />
+                                <Input label='Description' name='description' value={this.state.description} onChange={this.handleChange} />
                                 <br />
-                                <Input label='Interval (sec)' name='interval' onChange={this.handleChange} />
-                                <br /><br />
-                                <Input label='Host' name='host' onChange={this.handleChange} />
-                                <br /><br />
-                                <Input label='Port' name='host' onChange={this.handleChange} />
-                                <Select label='Type' name='host' onChange={this.handleChange} />
                             </Box>
                         </div>
                     </div>
@@ -158,7 +237,7 @@ export default class Modbus_Schedules_Add extends Component {
                         {/* 오른쪽 */}
                         <div style={{ width: '45%' }}>
                             <br /><br />
-                            <Box title='Communications' border type='default' collapsable collapsed solid>
+                            <Box title='Communications' border type='default' collapsable solid>
                                 <div style={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -268,12 +347,7 @@ export default class Modbus_Schedules_Add extends Component {
                             </Box>
                         </div>
                     </div>
-                    <div style={{ textAlign: 'right', paddingRight: '3%' }}>
-                        <button
-                            type='submit'
-                            style={{ padding: '5px', width: '100px' }}
-                            onClick={() => { }}>Save</button>
-                    </div>
+
                     <br /><br />
                 </Box >
             </Content >

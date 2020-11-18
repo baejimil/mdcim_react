@@ -11,40 +11,15 @@ import Subtitle from '../../../components/Subtitle';
 import Textarea from '../../../components/Textarea';
 import Select from '../../../components/Select';
 
-const Columns = [
-    {
-        title: 'No',
-        data: 'index',
-    },
-    {
-        title: 'Name',
-        data: 'id',
-        render: data =>
-            <Link to={`/devicesettings/modbusschedulesdetails/${data}`}>{data}
-            </Link>
-    },
-    {
-        title: 'Host',
-        data: 'template[0].key',
 
-    },
-    {
-        title: 'Port',
-        data: 'port',
-    },
-    {
-        title: 'Interval (sec)',
-        data: 'seconds',
-    },
-    {
-        title: 'Description',
-        data: 'description',
-    },
-];
-
+// 처음 불러오는 componentDidMount 
 const firstarray = []
+
+// edit에서 사용하는 match 된 배열
 const secondarray = []
-const fourtharray = []
+
+const simpleTableData = []
+
 
 class Modbus_Schedules extends Component {
     constructor(props) {
@@ -52,28 +27,113 @@ class Modbus_Schedules extends Component {
         this.state = {
             Schedules: [],
         }
+        // this.simpleClick = this.simpleClick.bind(this)
+        this.delButtonClick = this.delButtonClick.bind(this)
     }
     componentDidMount() {
         // axios.get('http://127.0.0.1:5000/schedules')
         axios.get('http://127.0.0.1:5001/devicesettings/modbusschedules')
             .then(res => {
-                res.data.map((data, index) => {
-                    data.index = index;
-                    firstarray.push(res.data[index]);
-                    // if (firstarray.length < 1) {
-                    //     firstarray.push(res.data[index])
-                    // }
-                    // else
-                    //     return false
-                })
-                this.setState(prevState => ({ Schedules: [...prevState.Schedules, ...res.data] }))
+                if (simpleTableData.length < res.data.length) {
+                    res.data.map((data, index) => {
+                        data.index = index;
+                        firstarray.push(res.data[index]);
+                        let input = {};
+                        input.index = index
+                        input.id = data.id
+                        input.code = data.code
+                        if (data.use == true) {
+                            input.state = 'Running'
+                        }
+                        else {
+                            input.state = 'Nope'
+                        }
+                        input.use = data.use
+                        input.seconds = data.seconds
+                        input.description = data.description
+                        input.host = data.comm.setting.host
+                        input.port = data.comm.setting.port
+                        input.del = index
+                        simpleTableData.push(input)
+                    })
+                }
+                this.setState(prevState => ({ Schedules: [...prevState.Schedules, ...simpleTableData] }))
+
             })
             .catch(function (error) {
                 console.log(error);
             })
     }
 
+    delButtonClick() {
+        let form = new FormData
+        form.append('modbus_schedules_tablechanges', JSON.stringify(simpleTableData))
+        if (window.confirm('Do you really want to Save Changes?') == true) {
+            axios.post('http://127.0.0.1:5001/devicesettings/modbusschedules/tablechanges', form, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            window.location.href = 'http://localhost:3000/devicesettings/modbusschedules'
+        }
+        else
+            return false
+    }
+
     render() {
+        const Columns = [
+            {
+                title: 'No',
+                data: 'index',
+            },
+            {
+                title: 'Name',
+                data: 'id',
+                render: data =>
+                    <Link to={`/devicesettings/modbusschedulesdetails/${data}`}>{data}
+                    </Link>
+            },
+            {
+                title: 'Host',
+                data: 'host',
+
+            },
+            {
+                title: 'Port',
+                data: 'port',
+            },
+            {
+                title: 'Interval (sec)',
+                data: 'seconds',
+            },
+            {
+                title: 'Description',
+                data: 'description',
+            },
+            {
+                title: 'Use',
+                data: 'state',
+            },
+            {
+                title: '',
+                data: 'del',
+                render: (del) =>
+                    <Button
+                        icon='fas-trash-alt'
+                        text='Del'
+                        type='danger'
+                        onClick={() => {
+                            simpleTableData.map((data, index) => {
+                                console.log(del)
+                                if (data.del == del) {
+                                    simpleTableData.splice(index, 1)
+                                }
+                                this.setState({ Schedules: simpleTableData })
+                            })
+                        }}
+                    />
+            },
+        ];
         return (
             <Content title='Modbus' >
                 <Box title='Modbus Schedules List' border type='default' collapsable solid >
@@ -82,7 +142,8 @@ class Modbus_Schedules extends Component {
                         <Button icon='fas-sync' type='default' onClick={() => { window.location.reload(false) }} />&nbsp;&nbsp;
                 </div>
                     <SimpleTable columns={Columns} data={this.state.Schedules} />
-                    <br /><br />
+                    <div style={{ padding: '120px' }} />
+                    <SaveButton onClick={this.delButtonClick} />
                 </Box>
             </Content>
         );
@@ -131,6 +192,12 @@ class Modbus_Schedules_Details extends Component {
             MS: [],
             paramsid: match.params.id,
             loading: true,
+            id: '',
+            use: false,
+            host: '',
+            port: '',
+            interval: '',
+            description: '',
         }
         this.onDragEnd = this.onDragEnd.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -147,10 +214,20 @@ class Modbus_Schedules_Details extends Component {
             }
             // data.id == this.state.paramsid ? secondarray.push(data) : console.log('Else wrong ID')
         })
+        console.log(secondarray)
         secondarray[0].template.map((data, index) => {
             secondarray[0].template[index].id = `t-${index}`
         })
-        this.setState({ MS: secondarray, loading: false, code: secondarray[0].code })
+        this.setState({
+            MS: secondarray,
+            loading: false,
+            code: secondarray[0].code,
+            id: secondarray[0].id,
+            host: secondarray[0].comm.setting.host,
+            port: secondarray[0].comm.setting.port,
+            interval: secondarray[0].seconds,
+            description: secondarray[0].description,
+        })
     }
 
     onDragEnd(result) {
@@ -179,7 +256,15 @@ class Modbus_Schedules_Details extends Component {
         const sendData = []
 
         editData['code'] = this.state.MS[0].code
-        editData['id'] = this.state.MS[0].id
+        editData['id'] = this.state.id
+        editData['use'] = this.state.use
+        editData['seconds'] = this.state.interval
+        editData.comm = {}
+        editData.comm.setting = {}
+        editData.comm.comm_type = this.state.MS[0].comm.comm_typ
+        editData.comm.setting.host = this.state.host
+        editData.comm.setting.port = this.state.port
+        editData.comm.setting.description = this.state.description
 
         this.state.MS[0].template.map((data, index) => {
             let temp = {}
@@ -230,24 +315,49 @@ class Modbus_Schedules_Details extends Component {
         return (
             <Content title='ModbusTCP Settings'>
                 <Box border type='default' solid>
-                    <div style={{ padding: '10px 0px 15px 10px' }}>
-                        <a href='/devicesettings/modbusschedules'>
-                            <Button icon='fas-arrow-left' text='Back to list' type='warning' />
-                        </a>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ paddingLeft: '3%', paddingTop: '1.5%' }}>
+                            <a href='/devicesettings/modbusschedules'>
+                                <Button icon='fas-arrow-left' text='&nbsp;Back to list' type='warning' />
+                            </a>
+                        </div>
+                        <div style={{ paddingLeft: '1%', paddingTop: '1.5%' }}>
+                            <Button
+                                type='primary'
+                                icon='fas-save'
+                                text='&nbsp;Save'
+                                style={{ padding: '5px', width: '100px' }}
+                                onClick={this.click}
+                            />
+                        </div>
                     </div>
-                    <br />
+                    <div style={{ padding: '1%' }} />
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ width: '94%' }}>
                             <Box title='Communication Setting' border type='default' collapsable collapsed solid>
+                                <div style={{ padding: '4px' }} />
+                                <CheckBox label='Use' name='use' value={this.state.use} onChange={this.handleChange} />
                                 <br />
-                                <CheckBox label='Use' />
+                                <Input label='Name' name='id' value={this.state.id} onChange={this.handleChange} />
+                                <br /><br />
+                                <Input label='Interval (sec)' name='interval' value={this.state.interval} onChange={this.handleChange} />
+                                <br /><br />
+                                <Input label='Host' name='host' value={this.state.host} onChange={this.handleChange} />
+                                <br /><br />
+                                <Input label='Port' name='port' value={this.state.port} onChange={this.handleChange} />
+                                <Select
+                                    label='Type'
+                                    name='comm_typ'
+                                    options={selectType}
+                                    value={this.state.MS[0].comm.comm_typ}
+                                    onChange={(change) => {
+                                        const { params: { data } } = change;
+                                        this.state.MS[0].comm_typ = data
+                                    }}
+                                    placeholder={this.state.MS[0].comm.comm_typ}
+                                />
+                                <Input label='Description' name='description' value={this.state.description} onChange={this.handleChange} />
                                 <br />
-                                <Input label='Interval (sec)' name='interval' onChange={this.handleChange} />
-                                <br /><br />
-                                <Input label='Host' name='host' onChange={this.handleChange} />
-                                <br /><br />
-                                <Input label='Port' name='host' onChange={this.handleChange} />
-                                <Select label='Type' name='host' onChange={this.handleChange} />
                             </Box>
                         </div>
                     </div>
@@ -391,91 +501,85 @@ class Modbus_Schedules_Details extends Component {
                             </Box>
                         </div>
                     </div>
-                    <div style={{ textAlign: 'right', paddingRight: '3%' }}>
-                        <button
-                            type='submit'
-                            style={{ padding: '5px', width: '100px' }}
-                            onClick={this.click}>Save</button>
-                    </div>
-                    <br /><br />
+                    <br />
                 </Box >
             </Content >
         );
     }
 }
 
-class Modbus_Schedules_Edit extends Component {
-    constructor(props) {
-        super(props);
-        const { match } = props;
-        this.state = {
-            detailtemp: '',
-            paramskey: match.params.key,
-            loading: true,
-            key: '',
-            note: '',
-            type: '',
-        }
-        this.handleChange = this.handleChange.bind(this)
-        this.click = this.click.bind(this)
-    }
-    componentDidMount() {
-        secondarray[0].template.map((data, index) => {
-            data.key == this.state.paramskey ? fourtharray.push(data) : console.log('wrong key')
-        })
-        this.setState({ detailtemp: fourtharray, loading: false })
-    }
+// class Modbus_Schedules_Edit extends Component {
+//     constructor(props) {
+//         super(props);
+//         const { match } = props;
+//         this.state = {
+//             detailtemp: '',
+//             paramskey: match.params.key,
+//             loading: true,
+//             key: '',
+//             note: '',
+//             type: '',
+//         }
+//         this.handleChange = this.handleChange.bind(this)
+//         this.click = this.click.bind(this)
+//     }
+//     componentDidMount() {
+//         secondarray[0].template.map((data, index) => {
+//             data.key == this.state.paramskey ? fourtharray.push(data) : console.log('wrong key')
+//         })
+//         this.setState({ detailtemp: fourtharray, loading: false })
+//     }
 
-    handleChange(hc) {
-        this.setState({ [hc.target.name]: hc.target.value })
-    }
+//     handleChange(hc) {
+//         this.setState({ [hc.target.name]: hc.target.value })
+//     }
 
-    click() {
-        let form = new FormData()
-        form.append('modbus_template_edit_key', this.state.key)
-        form.append('modbus_template_edit_note', this.state.note)
-        form.append('modbus_template_edit_type', this.state.type)
+//     click() {
+//         let form = new FormData()
+//         form.append('modbus_template_edit_key', this.state.key)
+//         form.append('modbus_template_edit_note', this.state.note)
+//         form.append('modbus_template_edit_type', this.state.type)
 
-        if (window.confirm('Do you really want to Edit?') == true) {
-            axios.post('http://127.0.0.1:5001/devicesettings/modbusschedulesedit', form)
-            window.location.href = 'http://localhost:3000/'
-        }
-        else {
-            return false
-        }
-    }
+//         if (window.confirm('Do you really want to Edit?') == true) {
+//             axios.post('http://127.0.0.1:5001/devicesettings/modbusschedulesedit', form)
+//             window.location.href = 'http://localhost:3000/'
+//         }
+//         else {
+//             return false
+//         }
+//     }
 
-    render() {
-        if (this.state.loading) return <div>Loading...</div>
-        return (
-            <Content title='Modbus' >
-                <Box title='Modbus Schedules Edit' border type='default' collapsable solid>
-                    <div style={{ padding: '10px 0px 15px 10px' }}>
-                        <a href='/devicesettings/modbusschedules'>
-                            <Button icon='fas-arrow-left' text='Back to list' type='warning' />
-                        </a>
-                    </div>
-                    <br />
-                    <div>
-                        <Input label='Key' name='key' value={this.state.key} onChange={this.handleChange} placeholder={this.state.detailtemp[0].key} />
-                        <Input label='Note' name='note' value={this.state.note} onChange={this.handleChange} placeholder={this.state.detailtemp[0].note} />
-                        <Input label='Type' name='type' value={this.state.type} onChange={this.handleChange} placeholder={this.state.detailtemp[0].type} />
-                    </div>
-                    <br /><br />
-                    <div style={{ textAlign: 'right', paddingRight: '2%' }}>
-                        <button
-                            type='submit'
-                            style={{ padding: '5px', width: '100px' }}
-                            onClick={this.click}
-                        >Edit</button>
-                    </div>
-                    <br />
-                    <br />
-                </Box>
-            </Content>
-        );
-    }
-}
+//     render() {
+//         if (this.state.loading) return <div>Loading...</div>
+//         return (
+//             <Content title='Modbus' >
+//                 <Box title='Modbus Schedules Edit' border type='default' collapsable solid>
+//                     <div style={{ padding: '10px 0px 15px 10px' }}>
+//                         <a href='/devicesettings/modbusschedules'>
+//                             <Button icon='fas-arrow-left' text='Back to list' type='warning' />
+//                         </a>
+//                     </div>
+//                     <br />
+//                     <div>
+//                         <Input label='Key' name='key' value={this.state.key} onChange={this.handleChange} placeholder={this.state.detailtemp[0].key} />
+//                         <Input label='Note' name='note' value={this.state.note} onChange={this.handleChange} placeholder={this.state.detailtemp[0].note} />
+//                         <Input label='Type' name='type' value={this.state.type} onChange={this.handleChange} placeholder={this.state.detailtemp[0].type} />
+//                     </div>
+//                     <br /><br />
+//                     <div style={{ textAlign: 'right', paddingRight: '2%' }}>
+//                         <button
+//                             type='submit'
+//                             style={{ padding: '5px', width: '100px' }}
+//                             onClick={this.click}
+//                         >Edit</button>
+//                     </div>
+//                     <br />
+//                     <br />
+//                 </Box>
+//             </Content>
+//         );
+//     }
+// }
 
 export default function Routes() {
     return (
@@ -483,7 +587,7 @@ export default function Routes() {
             <Switch>
                 <Route path='/devicesettings/modbusschedules' exact component={Modbus_Schedules} />
                 <Route path='/devicesettings/modbusschedulesdetails/:id' exact component={Modbus_Schedules_Details} />
-                <Route path='/devicesettings/modbusschedulesedit/:key' exact component={Modbus_Schedules_Edit} />
+                {/* <Route path='/devicesettings/modbusschedulesedit/:key' exact component={Modbus_Schedules_Edit} /> */}
             </Switch>
         </Router>
     );
